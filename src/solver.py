@@ -1,14 +1,9 @@
-# Tilemap flag states
-EMPTY = 0
-ORIGINAL_PUZZLE = 1
-SELECTED = 2
-MODIFIED = 3
-
 import pygame
+import sudoku
 
 
-def solve(sudoku_values, sudoku_flags):
-    return solveCell(0, 0, sudoku_values, sudoku_flags)
+def solve(sudoku):
+    return solveCell(0, 0, sudoku.sudoku_values, sudoku.sudoku_flags)
 
 
 def solveCell(row, column, sudoku_values, sudoku_flags) -> bool:
@@ -19,14 +14,14 @@ def solveCell(row, column, sudoku_values, sudoku_flags) -> bool:
     nextRow = row if column < 8 else row + 1
     nextColumn = column + 1 if column < 8 else 0
 
-    if sudoku_flags[row, column] == ORIGINAL_PUZZLE:
+    if sudoku_flags[row][column] == sudoku.Flag.ORIGINAL_PUZZLE:
         return solveCell(nextRow, nextColumn, sudoku_values, sudoku_flags)
     else:
         i = 1
         while i <= 9:
             pygame.time.delay(1)
             sudoku_values[row][column] = i
-            sudoku_flags[row][column] = MODIFIED
+            sudoku_flags[row][column] = sudoku.Flag.MODIFIED
             if (
                 checkRow(row, sudoku_values)
                 and checkColumn(column, sudoku_values)
